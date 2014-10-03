@@ -1,0 +1,25 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Open sans', 'Arial' !important;
+}
+
+input, select{
+  box-sizing: border-box;
+}
+
+img {
+	border: none;
+	outline: none;
+}
+
+div.clr {
+	clear: both;
+	float: none;
+	height: 0px;
+	line-height: 0px;
+}
+
+.displayNone {
+	display: none;
+}

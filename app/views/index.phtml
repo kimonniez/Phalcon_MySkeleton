@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" type="text/css" href="/css/styles.css">
+		<script src="/js/jquery.js"></script>
+	</head>
+	<body>
+		<?php //Подключение header ?>
+		<?php $this->partial('partial/header', array());?>
+
+		<div style="width: 960px; margin: 0px auto; height: 100px;">
+			<?php //Вывод флеш сообщений ?>
+			<?php $this->flashSession->output() ?>
+		
+			<?php //Вывод контента ?>
+			<?php echo $this->getContent() ?>
+		</div>
+		<?php //Подключение footer ?>
+		<?php $this->partial('partial/footer', array());?>
+	</body>
+</html>
