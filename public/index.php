@@ -7,13 +7,13 @@ try {
     //Register an autoloader
     $loader = new \Phalcon\Loader();
     $loader->registerDirs(array(
-        $config->phalcon->controllersDir,
-        $config->phalcon->modelsDir,
-        $config->phalcon->viewsDir,
-        $config->phalcon->pluginsDir,
-        $config->phalcon->libraryDir,
-        $config->phalcon->mappersDir,
-        $config->phalcon->cacheDir,
+        $config->application->controllersDir,
+        $config->application->modelsDir,
+        $config->application->viewsDir,
+        $config->application->pluginsDir,
+        $config->application->libraryDir,
+        $config->application->mappersDir,
+        $config->application->cacheDir,
     ))->register();
 
     //Create a DI
@@ -32,12 +32,12 @@ try {
     //Setting up the view component
     $di->set('view', function() use ($config){
         $view = new \Phalcon\Mvc\View();
-        $view->setViewsDir($config->phalcon->viewsDir);
+        $view->setViewsDir($config->application->viewsDir);
         return $view;
     });
 
     $di->set('router', function() use ($config) {
-        return include $config->phalcon->routerPath;
+        return include $config->application->routerPath;
     });
 
     $di->set('flashSession', function(){
