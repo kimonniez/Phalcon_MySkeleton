@@ -42,11 +42,15 @@ try {
 
     $di->set('flashSession', function(){
         $flash = new \Phalcon\Flash\Session(array(
-            'error' => 'error',
-            'success' => 'success',
-            'notice' => 'notice',
+            'error' => 'alert alert-danger',
+            'success' => 'alert alert-success',
+            'notice' => 'alert alert-warning',
         ));
         return $flash;
+    });
+
+    $di->set('authorizer', function(){
+        return new Authorizer();
     });
 
     $di->set('registry', function(){
@@ -69,10 +73,14 @@ try {
     $di->set('dispatcher', function() use ($di) {
         //Obtain the standard eventsManager from the DI
         $eventsManager = $di->getShared('eventsManager');
+
+        //Uncomment for ACL enable
         //Instantiate the Security plugin
-        $security = new Security($di);
+        //$security = new Security($di);
         //Listen for events produced in the dispatcher using the Security plugin
-        $eventsManager->attach('dispatch', $security);
+        //$eventsManager->attach('dispatch', $security);
+
+
         $dispatcher = new Phalcon\Mvc\Dispatcher();
         //Bind the EventsManager to the Dispatcher
         $dispatcher->setEventsManager($eventsManager);
@@ -80,11 +88,13 @@ try {
         return $dispatcher;
     });
 
-    /*$di->set('session', function() {
+    $di->set('session', function() {
         $session = new Phalcon\Session\Adapter\Files();
         $session->start();
         return $session;
-    });*/
+    });
+
+
 
     /*$di->set('session', function(){
 

@@ -7,6 +7,10 @@ class IndexController extends ControllerBase
     	
     }
 
+    public function loginAction(){
+    	
+    }
+
     public function route404Action(){
     	
     }

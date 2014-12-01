@@ -1,0 +1,3 @@
+Create all models with setters and getters in 'app' directory with force key
+
+phalcon create-all-models --get-set --directory app --force

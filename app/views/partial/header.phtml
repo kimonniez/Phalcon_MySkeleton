@@ -1,3 +1,8 @@
 <header style="width: 960px; margin: 0px auto; height: 100px;">
-	<h1 style="line-height: 100px;">Header</h1>
+	<h1 style="line-height: 70px; margin: 0px;"><a href="/">Header</a></h1>
+	<?php if(isset($user)) { ?>
+		<span>Привет, <?php echo $user->getMail() ?> <a href="/user/unauthorize">Log out</a></span>
+	<?php } else { ?>
+		<span>Вы не авторизованы. <a href="/index/login">Log in</a></span>
+	<?php } ?>
 </header>
