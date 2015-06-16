@@ -1,0 +1,93 @@
+<?php if(isset($defaults) AND count($defaults)>0) {
+	Phalcon\Tag::setDefaults($defaults);
+} ?>
+
+<?php echo Phalcon\Tag::form(array('method' => 'post', 'action' => 'goods/edit')); ?>
+
+	<?php echo Phalcon\Tag::textField(array('name', 'size' => 30, 'class' => 'inputText', 'placeholder' => 'Введите название товара', 'autocomplete' => 'off'))?>
+
+	<?php 
+		$talonPrices = array('50' => '50 р', '100' => '100 р', '150' => '150 р', '200' => '200 р', '300' => '300 р', '500' => '500 р', '1000' => '1000 р');
+		echo Phalcon\Tag::selectStatic(array('talon_price', $talonPrices, array("data-placeholder" => "Укажите цену талона..."))) ;
+	?>
+
+	<?php echo Phalcon\Tag::textArea(array('brief', 'maxlength' => 200, 'rows' => 5, 'placeholder' => 'Введите краткое описание'))?>
+
+	<?php echo Phalcon\Tag::checkField(array("active", 'value' => '1')); ?>
+
+<?php echo Phalcon\Tag::endForm(); ?>
+<script>
+//upload images and preload preview
+	$('div.categoryList').on('change', 'input.catPreviewImgInput', function(event){
+			var categoryItem = $(this).parent();
+			var catid = categoryItem.attr('data-categoryid');
+		    
+		    var img = categoryItem.find('img.catPreviewImg');
+		    var preloader = categoryItem.find('img.catImgPreloader');
+
+		    var files;
+
+		    var oFReader = new FileReader();
+
+		    oFReader.readAsDataURL(event.target.files[0]);
+
+		    oFReader.onload = function(oFREvent) {
+		      img.attr('src', oFREvent.target.result);
+		      preloader.show();
+		    };
+
+		    files = event.target.files;
+
+		    var data = new FormData();
+
+		    $.each(files, function(key, value) {
+		      data.append(key, value);
+		    });
+
+		    data.append('catId', catid);
+		        
+	        $.ajax({
+	            url: '/images/saveCatImage/',
+	            type: 'POST',
+	            data: data,
+	            cache: false,
+	            dataType: 'json',
+	            processData: false, // Don't process the files
+	            contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+	            success: function(data, textStatus, jqXHR) {
+					if(data.success) {
+						console.log(data);
+						files = null;
+					} else {
+						// Handle errors here
+						console.log('ERRORS: ' + data.error);
+					}
+					preloader.hide();
+	            },
+	            error: function(jqXHR, textStatus, errorThrown) {
+	              // Handle errors here
+	              console.log('ERRORS: ' + textStatus);
+	              preloader.hide();
+	              // STOP LOADING SPINNER
+	            },
+	        });
+	    });
+	});
+
+	function preloadImgToPreview(event){
+
+	    var categoryItem = $(this).parent();
+	    console.log($(this));
+	    var img = categoryItem.find('img.catPreviewImg');
+	    var oFReader = new FileReader();
+
+	    oFReader.readAsDataURL(event.target.files[0]);
+
+	    oFReader.onload = function(oFREvent) {
+	      img.attr('src', oFREvent.target.result);
+	    };
+	    return;
+	    //files = event.target.files;
+	    //uploadFiles(itemId);
+	}
+</script>
