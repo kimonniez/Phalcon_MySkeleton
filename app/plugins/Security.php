@@ -16,10 +16,26 @@ class Security extends Plugin {
 		$this->_dependencyInjector = $dependencyInjector;
 	}
 
+	public function beforeException(Event $event, Dispatcher $dispatcher, Exception $exception) {		
+                
+        switch ($exception->getCode()) {
+            case \Phalcon\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+            case \Phalcon\Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                $dispatcher->forward(array(
+                    'controller' => 'index',
+                    'action' => 'route404'
+                ));
+
+                return false;
+        }
+            
+	}
+
+
 	/**
 	 * This action is executed before execute any action in the application
 	 */
-	public function beforeDispatch(Event $event, Dispatcher $dispatcher) {
+	public function afterDispatch(Event $event, Dispatcher $dispatcher) {
 
 		$auth = $this->session->get('auth');
 		if (!$auth) {
@@ -75,6 +91,7 @@ class Security extends Plugin {
 			//Public area resources
 			$publicResources = array(
 				'index' => array('index'),
+				'admin' => array('*')
 			);
 			foreach ($publicResources as $resource => $actions) {
 				$acl->addResource(new Phalcon\Acl\Resource($resource), $actions);

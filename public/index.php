@@ -2,8 +2,7 @@
 date_default_timezone_set('Europe/Moscow');
 error_reporting(E_ALL);
 try {
-
-    $config = new Phalcon\Config\Adapter\Ini( '../app/config/config.ini' );
+    $config = new Phalcon\Config\Adapter\Ini('../app/config/config.ini' );
     //Register an autoloader
     $loader = new \Phalcon\Loader();
     $loader->registerDirs(array(
@@ -20,12 +19,11 @@ try {
     $di = new Phalcon\DI\FactoryDefault();
 
     $di->set('db', function() use ($config) {
-        return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+        return new \Phalcon\Db\Adapter\Pdo\Postgresql(array(
             "host" => $config->database->host,
             "username" => $config->database->username,
             "password" => $config->database->password,
-            "dbname" => $config->database->dbname,
-            'charset'   =>'utf8'
+            "dbname" => $config->database->dbname
         ));
     });
 
@@ -49,8 +47,8 @@ try {
         return $flash;
     });
 
-    $di->set('authorizer', function(){
-        return new Authorizer();
+    $di->set('usersHelper', function(){
+        return new UsersHelper();
     });
 
     $di->set('registry', function(){
@@ -126,6 +124,11 @@ try {
     */
 
     //Handle the request
+
+    $di->set('r', function() {
+        return new R();
+    });
+
     $application = new \Phalcon\Mvc\Application($di);
 
     echo $application->handle()->getContent();

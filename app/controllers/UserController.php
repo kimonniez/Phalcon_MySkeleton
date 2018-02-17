@@ -4,6 +4,9 @@ class UserController extends ControllerBase
 {
 
     public function authorizeAction() {
+
+        die(print_r($this->r->getPost('mail', 'string')));;
+
     	if($this->authorizer->getAuth()){
     		$this->response->redirect('index/index');
     	}

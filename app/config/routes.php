@@ -1,7 +1,7 @@
 <?php
 
 $router = new Phalcon\Mvc\Router(false);
-
+$router->setUriSource($router::URI_SOURCE_SERVER_REQUEST_URI);
 $router->add(
     '/',
     array(

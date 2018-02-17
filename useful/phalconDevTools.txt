@@ -1,3 +1,8 @@
-Create all models with setters and getters in 'app' directory with force key
-
-phalcon create-all-models --get-set --directory app --force
+1. Зайти в контейнер с php
+2. Зайти в папку с phalcon-devtools/
+3. ./phalcon.sh
+4. ln -s $(pwd)/phalcon.php /usr/bin/phalcon
+5. chmod ugo+x /usr/bin/phalcon
+6. Убрать в конфиге ../ перед app/models
+   - phalcon model --name TABLE_NAME --get-set --force
+   - phalcon create-all-models --get-set --force

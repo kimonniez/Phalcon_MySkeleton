@@ -1,6 +1,6 @@
 <?php
 
-class Authorizer extends Phalcon\Mvc\User\Component
+class UsersHelper extends Phalcon\Mvc\User\Component
 {
 	private function _registerSession($user) {
 		//die('here');
@@ -40,13 +40,32 @@ class Authorizer extends Phalcon\Mvc\User\Component
 
 		$user = new Users();
 
-		$user->setMail($mail);
+		$user->setEmail($mail);
 		$user->setPassword($this->security->hash($password));
 
-		if (!$user->save()) {
-			throw new Exception("Can't create user", 1);
-		}
+		try {
+            $user->save();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+
 	}
+
+    public function validateUserFields($value, $fieldName) {
+        switch ($fieldName) {
+            case 'email':
+                return filter_var($value, FILTER_VALIDATE_EMAIL);
+                break;
+            case 'password':
+                return (mb_strlen($value) > 0) ? true : false;
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
 
     public function unauthorize() {
         $this->session->remove('auth');
